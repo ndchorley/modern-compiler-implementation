@@ -1,6 +1,4 @@
-import com.compiler.ExpressionList
-import com.compiler.Pair
-import com.compiler.TerminalExpression
+package com.compiler
 
 val ExpressionList.size: Int
     get() = when (this) {
