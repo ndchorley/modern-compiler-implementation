@@ -26,7 +26,13 @@ class MaxArgsTest {
                 Print(
                     Pair(
                         Number(7),
-                        TerminalExpression(BinaryExpression(Number(5), Operator.PLUS, Number(4)))
+                        TerminalExpression(
+                            BinaryExpression(
+                                Number(5),
+                                Operator.PLUS,
+                                Number(4)
+                            )
+                        )
                     )
                 )
             )
