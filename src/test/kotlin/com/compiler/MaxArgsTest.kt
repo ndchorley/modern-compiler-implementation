@@ -17,22 +17,22 @@ class MaxArgsTest {
         assertThat(maxArgs(statement), equalTo(2))
     }
 
-  @Test fun `it returns the maximum number of arguments of any print statement`() {
-      val compoundStatement =
-          CompoundStatement(
-              Print(
-                  TerminalExpression(Number(1)),
-              ),
-              Print(
-                  Pair(
-                      Number(7),
-                      TerminalExpression(BinaryExpression(Number(5), Operator.PLUS, Number(4)))
-                  )
-              )
-          )
+    @Test fun `it returns the maximum number of arguments of any print statement`() {
+        val compoundStatement =
+            CompoundStatement(
+                Print(
+                    TerminalExpression(Number(1)),
+                ),
+                Print(
+                    Pair(
+                        Number(7),
+                        TerminalExpression(BinaryExpression(Number(5), Operator.PLUS, Number(4)))
+                    )
+                )
+            )
 
-      assertThat(maxArgs(compoundStatement), equalTo(2))
-  }
+        assertThat(maxArgs(compoundStatement), equalTo(2))
+    }
 
     @Test fun `it returns 0 for an assignment`() {
         assertThat(
