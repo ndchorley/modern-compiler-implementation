@@ -17,6 +17,32 @@ class MaxArgsTest {
         assertThat(maxArgs(statement), equalTo(2))
     }
 
+    @Test fun `it returns the maximum number of arguments in any nested print statement`() {
+        val statement =
+            Print(
+                Pair(
+                    Number(4),
+                    TerminalExpression(
+                        StatementThenExpression(
+                            Print(
+                              Pair(
+                                  Number(7),
+                                  Pair(
+                                      Number(9),
+                                      TerminalExpression(Number(10))
+                                  )
+                              )
+                            ),
+                            Number(5)
+                        )
+                    )
+                )
+            )
+
+        assertThat(maxArgs(statement), equalTo(3))
+
+    }
+
     @Test fun `it returns the maximum number of arguments in any print in any subexpression`() {
         val program =
             CompoundStatement(
