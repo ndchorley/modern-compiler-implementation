@@ -40,6 +40,39 @@ class MaxArgsTest {
         assertThat(maxArgs(compoundStatement), equalTo(2))
     }
 
+    @Test fun `it returns the maximum number of arguments in any print in any subexpression`() {
+        val program =
+            CompoundStatement(
+                Assignment(
+                    "a",
+                    BinaryExpression(Number(5), Operator.PLUS, Number(3))
+                ),
+                CompoundStatement(
+                    Assignment(
+                        "b",
+                        StatementThenExpression(
+                            Print(
+                                Pair(
+                                    Identifier("a"),
+                                    TerminalExpression(
+                                        BinaryExpression(
+                                            Identifier("a"),
+                                            Operator.MINUS,
+                                            Number(1)
+                                        )
+                                    )
+                                )
+                            ),
+                            BinaryExpression(Number(10), Operator.TIMES, Identifier("a"))
+                        )
+                    ),
+                    Print(TerminalExpression(Identifier("b")))
+                )
+            )
+
+        assertThat(maxArgs(program), equalTo(2))
+    }
+
     @Test fun `it returns the number of arguments in a print as part of an assignment`() {
         val assignment =
             Assignment(
