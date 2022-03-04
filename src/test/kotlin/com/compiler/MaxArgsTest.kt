@@ -3,7 +3,6 @@ package com.compiler
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.jupiter.api.Test
-import size
 
 
 class MaxArgsTest {
@@ -18,13 +17,4 @@ class MaxArgsTest {
 
         assertThat(maxArgs(statement), equalTo(2))
     }
-
-
 }
-
-fun maxArgs(statement: Statement): Int =
-    when (statement) {
-        is Print -> statement.expressions.size
-        else -> TODO()
-    }
-
