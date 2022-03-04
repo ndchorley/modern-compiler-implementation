@@ -34,6 +34,19 @@ class MaxArgsTest {
         assertThat(maxArgs(compoundStatement), equalTo(2))
     }
 
+    @Test fun `it returns the number of arguments in a print as part of an assignment`() {
+        val assignment =
+            Assignment(
+                "a",
+                StatementThenExpression(
+                    Print(TerminalExpression(Identifier("a"))),
+                    Number(1)
+                )
+            )
+
+        assertThat(maxArgs(assignment), equalTo(1))
+    }
+
     @Test fun `it returns 0 for an assignment`() {
         assertThat(
             maxArgs(Assignment("a", Number(1))),
