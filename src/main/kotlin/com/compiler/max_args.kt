@@ -5,9 +5,11 @@ fun maxArgs(statement: Statement): Int {
         is Print -> statement.expressions.size
         is Assignment -> 0
         is CompoundStatement ->
-            statement
-                .findPrint()?.let { print -> maxArgs(print) }
-                ?: run { TODO() }
+            when {
+                statement.statement1 is Print && statement.statement2 is Print ->
+                    maxOf(maxArgs(statement.statement1), maxArgs(statement.statement2))
+                else -> TODO()
+            }
     }
 }
 
