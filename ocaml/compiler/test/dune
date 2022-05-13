@@ -1,0 +1,3 @@
+(test
+ (name compiler)
+ (libraries ounit2 compiler))
