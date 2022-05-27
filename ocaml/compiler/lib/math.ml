@@ -1,0 +1,1 @@
+let max_of values = List.fold_left max 0 values
