@@ -55,7 +55,35 @@ open Compiler.Maxargs
                 ~printer:string_of_int
             )
 
-        )
+        );
+
+    "returns the maximum number of arguments of any print statement " ^
+    "within any subexpression of a statement" >::
+      (fun _ ->
+        let statement = CompoundStatement (
+          Assignment ("a", BinaryExpression (Number (5), Plus, Number (3))),
+          CompoundStatement (
+            Assignment (
+              "b",
+              StatementThenExpression (
+                Print [
+                  Identifier ("a");
+                  BinaryExpression (Identifier ("a"), Minus, Number (1))
+                ],
+                BinaryExpression (Number (10), Times, Identifier ("a"))
+              )
+            ),
+            Print [Identifier ("b")]
+          )
+        ) in
+          (
+            assert_equal
+              2
+              (max_args statement)
+              ~printer:string_of_int
+          )
+
+      )
   ]
 
   let _ = run_test_tt_main tests
