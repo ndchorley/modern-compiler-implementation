@@ -60,7 +60,7 @@ open Compiler.Maxargs
     "returns the maximum number of arguments of any print statement " ^
     "within any subexpression of a statement" >::
       (fun _ ->
-        let statement = CompoundStatement (
+        let program = CompoundStatement (
           Assignment ("a", BinaryExpression (Number (5), Plus, Number (3))),
           CompoundStatement (
             Assignment (
@@ -79,7 +79,7 @@ open Compiler.Maxargs
           (
             assert_equal
               2
-              (max_args statement)
+              (max_args program)
               ~printer:string_of_int
           )
 
