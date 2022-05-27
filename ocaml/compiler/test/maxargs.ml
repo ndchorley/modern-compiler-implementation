@@ -1,6 +1,7 @@
 open OUnit2
 open Compiler.Grammar
 open Compiler.Maxargs
+open Program
 
  let tests =
    "max_args" >:::
@@ -60,29 +61,10 @@ open Compiler.Maxargs
     "returns the maximum number of arguments of any print statement " ^
     "within any subexpression of a statement" >::
       (fun _ ->
-        let program = CompoundStatement (
-          Assignment ("a", BinaryExpression (Number (5), Plus, Number (3))),
-          CompoundStatement (
-            Assignment (
-              "b",
-              StatementThenExpression (
-                Print [
-                  Identifier ("a");
-                  BinaryExpression (Identifier ("a"), Minus, Number (1))
-                ],
-                BinaryExpression (Number (10), Times, Identifier ("a"))
-              )
-            ),
-            Print [Identifier ("b")]
-          )
-        ) in
-          (
-            assert_equal
-              2
-              (max_args program)
-              ~printer:string_of_int
-          )
-
+        assert_equal
+          2
+          (max_args program)
+          ~printer:string_of_int
       )
   ]
 
