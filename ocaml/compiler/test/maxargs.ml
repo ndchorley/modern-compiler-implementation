@@ -37,7 +37,25 @@ open Compiler.Maxargs
                 (max_args statement)
                 ~printer:string_of_int
             )
-      )
+      );
+
+    "returns the maximum number of arguments of a print nested " ^
+    "within other print statements" >::
+        (fun _ ->
+          let statement = Print [
+            StatementThenExpression (
+              Print [Number (1); Number(2)],
+              Number (3)
+            )
+          ] in
+            (
+              assert_equal
+                2
+                (max_args statement)
+                ~printer:string_of_int
+            )
+
+        )
   ]
 
   let _ = run_test_tt_main tests
