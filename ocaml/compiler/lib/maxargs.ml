@@ -2,8 +2,12 @@ open Grammar
 
 exception Todo
 
-let max_args (statement: statement) =
+let rec max_args (statement: statement) =
   match statement with
   | Print expressions -> List.length expressions
-  | Assignment (_, _) -> 0
+  | Assignment (_, expression) -> (
+      match expression with
+      | StatementThenExpression (statement, _) -> max_args statement
+      | _ -> 0
+    )
   | CompoundStatement (_, _) -> raise Todo

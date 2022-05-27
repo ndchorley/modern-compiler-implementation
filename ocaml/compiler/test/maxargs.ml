@@ -19,6 +19,24 @@ open Compiler.Maxargs
           0
           (max_args (Assignment ("x", Number (2))))
           ~printer:string_of_int
+      );
+
+    "returns the maximum number of arguments to a print nested " ^
+    "within an assignment" >::
+        (fun _ ->
+          let statement = Assignment (
+            "x",
+            StatementThenExpression (
+              Print [Number (1)],
+              Number (2)
+            )
+          ) in
+            (
+              assert_equal
+                1
+                (max_args statement)
+                ~printer:string_of_int
+            )
       )
   ]
 
