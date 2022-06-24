@@ -1,3 +1,3 @@
 (tests
- (names maxargs interpreter)
+ (names maxargs interpreter stringutils)
  (libraries ounit2 compiler))
