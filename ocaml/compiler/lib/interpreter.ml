@@ -20,10 +20,8 @@ let interpret program write_line =
     match program with
     | Print expressions ->
         expressions
-        |> List.map
-            (fun expression ->
-              expression |> evaluate table |> string_of_int
-            )
+        |> List.map (evaluate table)
+        |> List.map string_of_int
         |> join " "
         |> write_line
     | _ -> ()

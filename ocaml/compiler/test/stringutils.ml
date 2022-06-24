@@ -12,7 +12,7 @@ let tests =
 
     "joins a list of strings with a separator" >::
       (fun _ ->
-        let result = join " "  ["1"; "2"; "3"] in
+        let result = join " " ["1"; "2"; "3"] in
 
           assert_equal "1 2 3" result ~printer:Fun.id
       )
