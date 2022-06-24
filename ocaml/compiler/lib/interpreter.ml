@@ -9,8 +9,8 @@ let evaluate expression =
 let interpret program write_line =
   match program with
   | Print expressions ->
-    expressions
-    |> List.map (fun expression -> string_of_int (evaluate expression))
-    |> join " "
-    |> write_line
+      expressions
+      |> List.map (fun expression -> string_of_int (evaluate expression))
+      |> join " "
+      |> write_line
   | _ -> ()
