@@ -16,11 +16,14 @@ let evaluate table expression =
   | _ -> 0
 
 let interpret program write_line =
-  match program with
-  | Print expressions ->
-      expressions
-      |> List.map
-          (fun expression -> string_of_int (evaluate [] expression))
-      |> join " "
-      |> write_line
-  | _ -> ()
+  let table = [] in
+    match program with
+    | Print expressions ->
+        expressions
+        |> List.map
+            (fun expression ->
+              expression |> evaluate table |> string_of_int
+            )
+        |> join " "
+        |> write_line
+    | _ -> ()
