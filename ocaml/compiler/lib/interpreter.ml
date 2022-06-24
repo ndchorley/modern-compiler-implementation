@@ -1,4 +1,5 @@
 open Grammar
+open Stringutils
 
 let string_of expression =
   match expression with
@@ -9,7 +10,7 @@ let interpret program write_line =
   match program with
   | Print expressions ->
     expressions
-    |> List.hd
-    |> string_of
+    |> List.map string_of
+    |> join " "
     |> write_line
   | _ -> ()
