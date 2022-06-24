@@ -1,16 +1,16 @@
 open Grammar
 open Stringutils
 
-let string_of expression =
+let evaluate expression =
   match expression with
-  | Number (value) -> string_of_int value
-  | _ -> ""
+  | Number (value) -> value
+  | _ -> 0
 
 let interpret program write_line =
   match program with
   | Print expressions ->
     expressions
-    |> List.map string_of
+    |> List.map (fun expression -> string_of_int (evaluate expression))
     |> join " "
     |> write_line
   | _ -> ()
