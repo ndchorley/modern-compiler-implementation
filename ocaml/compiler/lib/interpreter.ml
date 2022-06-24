@@ -15,7 +15,7 @@ let evaluate table expression =
   | Identifier (name) -> value_for name table
   | _ -> 0
 
-let interpret_statement table statement =
+let rec interpret_statement table statement =
   match statement with
   | Print expressions ->
       let output =
@@ -24,7 +24,14 @@ let interpret_statement table statement =
           |> List.map string_of_int
           |> join " " in
         (table, Some (output))
-  | _ -> (table, None)
+  | CompoundStatement (first, second) ->
+      let first_result = interpret_statement table first in
+      let new_table = (fst first_result) in
+        (interpret_statement new_table second)
+  | Assignment (identifier, expression) ->
+      let value = evaluate table expression in
+      let new_table = (identifier, value) :: table in
+        (new_table, None)
 
 let interpret program write_line =
   let table = [] in

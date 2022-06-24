@@ -30,6 +30,24 @@ let tests =
             "1 2 3\n"
             !output
             ~printer:Fun.id
+      );
+
+    "prints the value of an identifier" >::
+      (fun _ ->
+        let output = ref "" in
+        let write_line line = output := !output ^ line ^ "\n" in
+        let program =
+          CompoundStatement (
+            Assignment ("a", Number (1)),
+            Print [Identifier ("a")]
+          ) in
+
+        let _ = interpret program write_line in
+
+          assert_equal
+            "1\n"
+            !output
+            ~printer:Fun.id
       )
   ]
 
