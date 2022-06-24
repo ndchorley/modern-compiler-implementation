@@ -5,7 +5,10 @@ let alternate_strings_with_separators strings separator =
   )
 
 let join strings separator =
-  Seq.fold_left
-    String.cat
-    ""
-    (alternate_strings_with_separators strings separator)
+  match strings with
+  | [] -> ""
+  | _ ->
+    Seq.fold_left
+      String.cat
+      ""
+      (alternate_strings_with_separators strings separator)
