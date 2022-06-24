@@ -15,13 +15,19 @@ let evaluate table expression =
   | Identifier (name) -> value_for name table
   | _ -> 0
 
+let interpret_statement table statement =
+  match statement with
+  | Print expressions ->
+      let output =
+        expressions
+          |> List.map (evaluate table)
+          |> List.map string_of_int
+          |> join " " in
+        (table, Some (output))
+  | _ -> (table, None)
+
 let interpret program write_line =
   let table = [] in
-    match program with
-    | Print expressions ->
-        expressions
-        |> List.map (evaluate table)
-        |> List.map string_of_int
-        |> join " "
-        |> write_line
+    match (interpret_statement table program) with
+    | (_, Some(output)) -> write_line output
     | _ -> ()
