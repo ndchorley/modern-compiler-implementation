@@ -4,7 +4,7 @@ let alternate_strings_with_separators strings separator =
     ((Seq.repeat separator) |> Seq.take (List.length strings - 1))
   )
 
-let join strings separator =
+let join separator strings =
   match strings with
   | [] -> ""
   | _ ->
