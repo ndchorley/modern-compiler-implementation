@@ -1,5 +1,4 @@
 open Grammar
-open Stringutils
 
 let value_for name table =
   (snd
@@ -35,7 +34,7 @@ interpret_statement table statement =
         expressions
           |> List.map (evaluate table)
           |> List.map string_of_int
-          |> join " " in
+          |> String.concat " " in
         (table, Some (output))
   | CompoundStatement (first, second) ->
       let first_result = interpret_statement table first in
