@@ -9,6 +9,14 @@ let value_for name table =
   )
 
 type evalulation_result = {value: int}
+
+let evaluate_binary_expression operator left_operand right_operand =
+  match operator with
+  | Plus -> left_operand + right_operand
+  | Minus -> left_operand - right_operand
+  | Times -> left_operand * right_operand
+  | Divide -> left_operand / right_operand
+
 let rec evaluate table expression =
   match expression with
   | Number (value) -> {value=value}
@@ -16,14 +24,11 @@ let rec evaluate table expression =
   | BinaryExpression (left, operator, right) -> (
       let left_result = evaluate table left in
       let right_result = evaluate table right in
-      let value = (
-        match operator with
-        | Plus -> left_result.value + right_result.value
-        | Minus -> left_result.value - right_result.value
-        | Times -> left_result.value * right_result.value
-        | Divide -> left_result.value / right_result.value
-      ) in
-        {value=value}
+        {value=(
+          evaluate_binary_expression
+            operator left_result.value right_result.value
+          )
+        }
     )
   | StatementThenExpression (statement, expression) -> (
       let new_table_and_output = interpret_statement table statement in
