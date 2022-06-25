@@ -8,18 +8,22 @@ let value_for name table =
     )
   )
 
+type evalulation_result = {value: int}
 let rec evaluate table expression =
   match expression with
-  | Number (value) -> value
-  | Identifier (name) -> value_for name table
+  | Number (value) -> {value=value}
+  | Identifier (name) -> {value=(value_for name table)}
   | BinaryExpression (left, operator, right) -> (
-      let left_value = evaluate table left in
-      let right_value = evaluate table right in
+      let left_result = evaluate table left in
+      let right_result = evaluate table right in
+      let value = (
         match operator with
-        | Plus -> left_value + right_value
-        | Minus -> left_value - right_value
-        | Times -> left_value * right_value
-        | Divide -> left_value / right_value
+        | Plus -> left_result.value + right_result.value
+        | Minus -> left_result.value - right_result.value
+        | Times -> left_result.value * right_result.value
+        | Divide -> left_result.value / right_result.value
+      ) in
+        {value=value}
     )
   | StatementThenExpression (statement, expression) -> (
       let new_table_and_output = interpret_statement table statement in
@@ -32,7 +36,10 @@ interpret_statement table statement =
   | Print expressions ->
       let output =
         expressions
-          |> List.map (evaluate table)
+          |> List.map
+            (fun expression ->
+              (evaluate table expression).value
+            )
           |> List.map string_of_int
           |> String.concat " "
           |> (fun line -> line ^ "\n") in
@@ -42,8 +49,8 @@ interpret_statement table statement =
       let new_table = (fst first_result) in
         (interpret_statement new_table second)
   | Assignment (identifier, expression) ->
-      let value = evaluate table expression in
-      let new_table = (identifier, value) :: table in
+      let result = evaluate table expression in
+      let new_table = (identifier, result.value) :: table in
         (new_table, None)
 
 let interpret program write =

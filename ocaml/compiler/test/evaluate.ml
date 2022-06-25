@@ -10,7 +10,7 @@ let tests =
 
         let result = evaluate table (Identifier ("a")) in
 
-          assert_equal 1 result ~printer:string_of_int
+          assert_equal 1 (result.value) ~printer:string_of_int
       )
   ]
 
