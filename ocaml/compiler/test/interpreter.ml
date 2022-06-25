@@ -7,7 +7,7 @@ let tests =
     "prints a single numeric expression" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output := !output ^ line ^ "\n" in
+        let write_line line = output := !output ^ line in
 
         let _ =
           interpret (Print [Number (4)]) write_line in
@@ -21,7 +21,7 @@ let tests =
     "prints multiple numeric expressions" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output := !output ^ line ^ "\n" in
+        let write_line line = output := !output ^ line in
 
         let _ =
           interpret (Print [Number (1); Number (2); Number (3)]) write_line in
@@ -35,7 +35,7 @@ let tests =
     "prints the value of an identifier" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output := !output ^ line ^ "\n" in
+        let write_line line = output := !output ^ line in
         let program =
           CompoundStatement (
             Assignment ("a", Number (1)),
@@ -53,7 +53,7 @@ let tests =
     "evaluates binary expressions" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output := !output ^ line ^ "\n" in
+        let write_line line = output := !output ^ line in
         let program =
           Print [
             BinaryExpression (Number (0), Plus, Number (1));
@@ -73,7 +73,7 @@ let tests =
     "interprets statements that are part of expressions" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output :=  !output ^ line ^ "\n" in
+        let write_line line = output :=  !output ^ line in
         let program =
           Print [
             StatementThenExpression (
