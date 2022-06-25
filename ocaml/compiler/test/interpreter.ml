@@ -48,6 +48,26 @@ let tests =
             "1\n"
             !output
             ~printer:Fun.id
+      );
+
+    "evaluates binary expressions" >::
+      (fun _ ->
+        let output = ref "" in
+        let write_line line = output := !output ^ line ^ "\n" in
+        let program =
+          Print [
+            BinaryExpression (Number (0), Plus, Number (1));
+            BinaryExpression (Number (3), Minus, Number (1));
+            BinaryExpression (Number (3), Times, Number (1));
+            BinaryExpression (Number (16), Divide, Number (4))
+          ] in
+
+        let _ = interpret program write_line in
+
+          assert_equal
+            "1 2 3 4\n"
+            !output
+            ~printer:Fun.id
       )
   ]
 

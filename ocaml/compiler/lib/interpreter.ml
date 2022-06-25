@@ -9,10 +9,19 @@ let value_for name table =
     )
   )
 
-let evaluate table expression =
+let rec evaluate table expression =
   match expression with
   | Number (value) -> value
   | Identifier (name) -> value_for name table
+  | BinaryExpression (left, operator, right) -> (
+      let left_value = evaluate table left in
+      let right_value = evaluate table right in
+        match operator with
+        | Plus -> left_value + right_value
+        | Minus -> left_value - right_value
+        | Times -> left_value * right_value
+        | Divide -> left_value / right_value
+    )
   | _ -> 0
 
 let rec interpret_statement table statement =
