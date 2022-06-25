@@ -7,10 +7,10 @@ let tests =
     "prints a single numeric expression" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output := !output ^ line in
+        let write string_to_write = output := !output ^ string_to_write in
 
         let _ =
-          interpret (Print [Number (4)]) write_line in
+          interpret (Print [Number (4)]) write in
 
           assert_equal
             "4\n"
@@ -21,10 +21,10 @@ let tests =
     "prints multiple numeric expressions" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output := !output ^ line in
+        let write string_to_write = output := !output ^ string_to_write in
 
         let _ =
-          interpret (Print [Number (1); Number (2); Number (3)]) write_line in
+          interpret (Print [Number (1); Number (2); Number (3)]) write in
 
           assert_equal
             "1 2 3\n"
@@ -35,14 +35,14 @@ let tests =
     "prints the value of an identifier" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output := !output ^ line in
+        let write string_to_write = output := !output ^ string_to_write in
         let program =
           CompoundStatement (
             Assignment ("a", Number (1)),
             Print [Identifier ("a")]
           ) in
 
-        let _ = interpret program write_line in
+        let _ = interpret program write in
 
           assert_equal
             "1\n"
@@ -53,7 +53,7 @@ let tests =
     "evaluates binary expressions" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output := !output ^ line in
+        let write string_to_write = output := !output ^ string_to_write in
         let program =
           Print [
             BinaryExpression (Number (0), Plus, Number (1));
@@ -62,7 +62,7 @@ let tests =
             BinaryExpression (Number (16), Divide, Number (4))
           ] in
 
-        let _ = interpret program write_line in
+        let _ = interpret program write in
 
           assert_equal
             "1 2 3 4\n"
@@ -73,7 +73,7 @@ let tests =
     "interprets statements that are part of expressions" >::
       (fun _ ->
         let output = ref "" in
-        let write_line line = output :=  !output ^ line in
+        let write string_to_write = output :=  !output ^ string_to_write in
         let program =
           Print [
             StatementThenExpression (
@@ -82,7 +82,7 @@ let tests =
             )
           ] in
 
-        let _ = interpret program write_line in
+        let _ = interpret program write in
 
           assert_equal
             "1\n"

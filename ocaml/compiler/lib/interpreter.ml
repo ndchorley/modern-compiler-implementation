@@ -46,8 +46,8 @@ interpret_statement table statement =
       let new_table = (identifier, value) :: table in
         (new_table, None)
 
-let interpret program write_line =
+let interpret program write =
   let table = [] in
     match (interpret_statement table program) with
-    | (_, Some(output)) -> write_line output
+    | (_, Some(output)) -> write output
     | _ -> ()
