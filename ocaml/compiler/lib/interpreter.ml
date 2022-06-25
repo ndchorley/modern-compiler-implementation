@@ -22,9 +22,13 @@ let rec evaluate table expression =
         | Times -> left_value * right_value
         | Divide -> left_value / right_value
     )
-  | _ -> 0
-
-let rec interpret_statement table statement =
+  | StatementThenExpression (statement, expression) -> (
+      let new_table_and_output = interpret_statement table statement in
+      let new_table = (fst new_table_and_output) in
+        evaluate new_table expression
+    )
+and
+interpret_statement table statement =
   match statement with
   | Print expressions ->
       let output =

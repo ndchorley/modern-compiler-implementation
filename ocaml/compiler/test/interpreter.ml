@@ -68,6 +68,26 @@ let tests =
             "1 2 3 4\n"
             !output
             ~printer:Fun.id
+      );
+
+    "interprets statements that are part of expressions" >::
+      (fun _ ->
+        let output = ref "" in
+        let write_line line = output :=  !output ^ line ^ "\n" in
+        let program =
+          Print [
+            StatementThenExpression (
+              Assignment ("a", Number (1)),
+              Identifier ("a")
+            )
+          ] in
+
+        let _ = interpret program write_line in
+
+          assert_equal
+            "1\n"
+            !output
+            ~printer:Fun.id
       )
   ]
 
