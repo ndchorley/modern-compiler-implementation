@@ -39,15 +39,12 @@ and
 interpret_statement table statement =
   match statement with
   | Print expressions ->
+      let results = List.map (evaluate table) expressions in
       let output =
-        expressions
-          |> List.map
-            (fun expression ->
-              (evaluate table expression).value
-            )
-          |> List.map string_of_int
-          |> String.concat " "
-          |> (fun line -> line ^ "\n") in
+        results
+        |> List.map (fun result -> string_of_int result.value)
+        |> String.concat " "
+        |> (fun line -> line ^ "\n") in
         (table, Some (output))
   | CompoundStatement (first, second) ->
       let first_result = interpret_statement table first in
