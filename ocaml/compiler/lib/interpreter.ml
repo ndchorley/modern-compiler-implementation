@@ -1,6 +1,6 @@
 open Grammar
 
-type state = {output: string option}
+type state = {table: (string * int) list; output: string option}
 type evalulation_result = {value: int; state: state}
 
 let value_for name table =
@@ -18,8 +18,10 @@ let evaluate_binary_expression operator left_operand right_operand =
 
 let rec evaluate table expression =
   match expression with
-  | Number (value) -> {value=value; state={output=None}}
-  | Identifier (name) -> {value=(value_for name table); state={output=None}}
+  | Number (value) ->
+      {value=value; state={output=None; table=table}}
+  | Identifier (name) ->
+      {value=(value_for name table); state={output=None; table=table}}
   | BinaryExpression (left, operator, right) -> (
       let left_result = evaluate table left in
       let right_result = evaluate table right in
@@ -27,14 +29,15 @@ let rec evaluate table expression =
           evaluate_binary_expression
             operator left_result.value right_result.value
           );
-          state={output=None}
+          state={output=None; table=table}
         }
     )
   | StatementThenExpression (statement, expression) -> (
       let new_table_and_output = interpret_statement table statement in
       let new_table = (fst new_table_and_output) in
       let new_output = (snd new_table_and_output) in
-        { (evaluate new_table expression) with state={output=new_output}}
+        { (evaluate new_table expression)
+          with state={output=new_output; table=table}}
     )
 and
 interpret_statement table statement =
