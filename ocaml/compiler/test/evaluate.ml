@@ -23,7 +23,10 @@ let tests =
             Number (2)
           )) in
 
-          assert_equal "1\n" (Option.get result.output) ~printer:Fun.id
+          assert_equal
+            "1\n"
+            (Option.get result.state.output)
+            ~printer:Fun.id
       )
   ]
 
