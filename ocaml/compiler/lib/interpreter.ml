@@ -1,12 +1,10 @@
 open Grammar
 
 let value_for name table =
-  (snd
     (List.find
       (fun name_and_value -> (fst name_and_value = name))
-      table
-    )
-  )
+      table)
+    |> snd
 
 type evalulation_result = {value: int; output: string option}
 
