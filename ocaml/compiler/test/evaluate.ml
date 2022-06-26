@@ -6,9 +6,9 @@ let tests =
   "evaluating" >::: [
     "an identifier produces its value" >::
       (fun _ ->
-        let table = [("a", 1)] in
+        let state = {table=[("a", 1)]; output=None} in
 
-        let result = evaluate table (Identifier ("a")) in
+        let result = evaluate state (Identifier ("a")) in
 
           assert_equal 1 (result.value) ~printer:string_of_int
       );
@@ -17,7 +17,7 @@ let tests =
     "as part of an expression") >::
       (fun _ ->
         let result =
-          evaluate []
+          evaluate {table=[]; output=None}
           (StatementThenExpression (
             Print [Number (1)],
             Number (2)
