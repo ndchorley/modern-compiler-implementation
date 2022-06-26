@@ -33,11 +33,9 @@ let rec evaluate state expression =
         }
     )
   | StatementThenExpression (statement, expression) -> (
-      let new_table_and_output = interpret_statement state statement in
-      let new_table = (fst new_table_and_output) in
-      let new_output = (snd new_table_and_output) in
-        { (evaluate new_table expression)
-          with state={output=new_output; table=state.table}}
+      let new_state = interpret_statement state statement in
+        { (evaluate new_state expression)
+          with state=new_state}
     )
 and
 interpret_statement state statement =
@@ -49,18 +47,18 @@ interpret_statement state statement =
         |> List.map (fun result -> string_of_int result.value)
         |> String.concat " "
         |> (fun line -> line ^ "\n") in
-        state, Some (output)
+        {state with output=Some (output)}
   | CompoundStatement (first, second) ->
-      let first_result = interpret_statement state first in
-      let new_table = (fst first_result) in
-        (interpret_statement new_table second)
+      let first_state = interpret_statement state first in
+        (interpret_statement first_state second)
   | Assignment (identifier, expression) ->
       let result = evaluate state expression in
       let new_table = (identifier, result.value) :: state.table in
-        ({state with table=new_table}, None)
+        {state with table=new_table}
 
 let interpret program write =
   let state = {table=[]; output=None} in
-    match (interpret_statement state program) with
-    | (_, Some(output)) -> write output
+  let final_state = (interpret_statement state program) in
+    match final_state.output with
+    | Some (output) -> write output
     | _ -> ()
