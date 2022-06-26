@@ -8,7 +8,7 @@ let value_for name table =
     )
   )
 
-type evalulation_result = {value: int}
+type evalulation_result = {value: int; output: string option}
 
 let evaluate_binary_expression operator left_operand right_operand =
   match operator with
@@ -19,21 +19,23 @@ let evaluate_binary_expression operator left_operand right_operand =
 
 let rec evaluate table expression =
   match expression with
-  | Number (value) -> {value=value}
-  | Identifier (name) -> {value=(value_for name table)}
+  | Number (value) -> {value=value; output=None}
+  | Identifier (name) -> {value=(value_for name table); output=None}
   | BinaryExpression (left, operator, right) -> (
       let left_result = evaluate table left in
       let right_result = evaluate table right in
         {value=(
           evaluate_binary_expression
             operator left_result.value right_result.value
-          )
+          );
+          output=None
         }
     )
   | StatementThenExpression (statement, expression) -> (
       let new_table_and_output = interpret_statement table statement in
       let new_table = (fst new_table_and_output) in
-        evaluate new_table expression
+      let new_output = (snd new_table_and_output) in
+        { (evaluate new_table expression) with output=new_output}
     )
 and
 interpret_statement table statement =
