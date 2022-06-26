@@ -17,11 +17,12 @@ let tests =
     "as part of an expression") >::
       (fun _ ->
         let result =
-          evaluate {table=[]; output=None}
-          (StatementThenExpression (
-            Print [Number (1)],
-            Number (2)
-          )) in
+          evaluate 
+            {table=[]; output=None}
+            (StatementThenExpression (
+              Print [Number (1)],
+              Number (2)
+            )) in
 
           assert_equal
             "1\n"
