@@ -57,8 +57,8 @@ interpret_statement state statement =
         {state with table=new_table}
 
 let interpret program write =
-  let state = {table=[]; output=None} in
-  let final_state = (interpret_statement state program) in
+  let initial_state = {table=[]; output=None} in
+  let final_state = (interpret_statement initial_state program) in
     match final_state.output with
     | Some (output) -> write output
     | _ -> ()
