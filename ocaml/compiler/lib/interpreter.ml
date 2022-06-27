@@ -17,8 +17,7 @@ let evaluate_binary_expression operator left_operand right_operand =
 
 let rec evaluate state expression =
   match expression with
-  | Number (value) ->
-      {value=value; state=state}
+  | Number (value) -> {value=value; state=state}
   | Identifier (name) ->
       {value=(value_for name state.table); state=state}
   | BinaryExpression (left, operator, right) -> (
@@ -31,11 +30,9 @@ let rec evaluate state expression =
           state=state
         }
     )
-  | StatementThenExpression (statement, expression) -> (
+  | StatementThenExpression (statement, expression) ->
       let new_state = interpret_statement state statement in
-        { (evaluate new_state expression)
-          with state=new_state}
-    )
+        { (evaluate new_state expression) with state=new_state}
 and
 interpret_statement state statement =
   match statement with
