@@ -5,7 +5,7 @@ type evalulation_result = {value: int; state: state}
 
 let value_for name table =
   table
-  |> List.find (fun name_and_value -> (fst name_and_value = name))
+  |> List.find (fun name_and_value -> fst name_and_value = name)
   |> snd
 
 let evaluate_binary_expression operator left_operand right_operand =
