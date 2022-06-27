@@ -4,10 +4,9 @@ type state = {table: (string * int) list; output: string option}
 type evalulation_result = {value: int; state: state}
 
 let value_for name table =
-    (List.find
-      (fun name_and_value -> (fst name_and_value = name))
-      table)
-    |> snd
+  table
+  |> List.find (fun name_and_value -> (fst name_and_value = name))
+  |> snd
 
 let evaluate_binary_expression operator left_operand right_operand =
   match operator with
