@@ -32,18 +32,25 @@ let rec evaluate state expression =
     )
   | StatementThenExpression (statement, expression) ->
       let new_state = interpret_statement state statement in
-        { (evaluate new_state expression) with state=new_state}
+        (evaluate new_state expression)
 and
 interpret_statement state statement =
   match statement with
   | Print expressions ->
+      let previous_output = (List.fold_left (
+        fun output expression ->
+          output ^
+          (Option.value (evaluate state expression).state.output ~default:""))
+        ""
+        expressions) in
+
       let results = List.map (evaluate state) expressions in
       let output =
         results
         |> List.map (fun result -> string_of_int result.value)
         |> String.concat " "
         |> (fun line -> line ^ "\n") in
-        {state with output=Some (output)}
+        {state with output=Some (previous_output ^ output)}
   | CompoundStatement (first, second) ->
       let first_state = interpret_statement state first in
         (interpret_statement first_state second)

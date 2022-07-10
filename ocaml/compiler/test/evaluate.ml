@@ -28,6 +28,29 @@ let tests =
             "1\n"
             (Option.get result.state.output)
             ~printer:Fun.id
+      );
+
+    "returns output produced by all nested print statements" >::
+      (fun _ ->
+        let result =
+          evaluate
+            {table=[]; output=None}
+            (StatementThenExpression(
+              Print [
+                StatementThenExpression(
+                  Print [Number (1)],
+                  Number (2)
+                );
+                Number (3)
+              ],
+              Number (4)
+            )) in
+
+          assert_equal
+            ("1\n" ^
+             "2 3\n")
+            (Option.get result.state.output)
+            ~printer:Fun.id
       )
   ]
 
